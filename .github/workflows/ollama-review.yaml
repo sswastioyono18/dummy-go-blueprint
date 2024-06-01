@@ -14,11 +14,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Ollama
+      - name: Install ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+      - name: Run ollama
         run: |
-          curl -fsSL https://ollama.com/install.sh | sh
-          ollama pull mistral
-          ollama run mistral
+          ollama serve && ollama pull mistral
         shell: bash
 
       - name: Get changed files
