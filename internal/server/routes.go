@@ -73,3 +73,7 @@ func fib(n int) int {
 	}
 	return fib(n-1) + fib(n-2)
 }
+
+func (s *Server) UserHandler(w http.ResponseWriter, r *http.Request) {
+	return
+}
