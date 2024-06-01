@@ -36,7 +36,7 @@ jobs:
             
             # Prepare the JSON payload
             json_payload=$(jq -n \
-            --arg model "${{ inputs.model }}" \
+            --arg model codellama \
             --arg prompt "You are an expert programmer in golang that writes simple, concise code and explanations. Find the bug and Review the following file:\n\n\`\`\`\n$file_content\n\`\`\`" \
             '{model: $model, prompt: $prompt, stream: false}')
           
