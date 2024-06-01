@@ -1,56 +1,59 @@
-name: Ollama GitHub Reviews
+name: Ollama Code Review
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  review:
-    permissions: write-all
+  ollama_review:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v2
 
-      - name: Install ollama
-        run: curl -fsSL https://ollama.com/install.sh | sh
-      - name: Run ollama
-        run: |
-          ollama pull codellama
-        shell: bash
+      - name: Set up jq
+        run: sudo apt-get install -y jq
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v43
+        uses: tj-actions/changed-files@v35
+        with:
+          separator: ' '
+          since: 'HEAD~1'
 
-      - name: Review code
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Ollama Review
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            # Read the file content into a variable
-            file_content=$(cat "$file")
-            
-            # Prepare the JSON payload
-            json_payload=$(jq -n \
-            --arg model codellama \
-            --arg prompt "You are an expert programmer in golang that writes simple, concise code and explanations. Find the bug and Review the following file:\n\n\`\`\`\n$file_content\n\`\`\`" \
-            '{model: $model, prompt: $prompt, stream: false}')
+            # Check if the file exists and is readable
+            if [ -r "$file" ]; then
+              # Read the file content into a variable
+              file_content=$(cat "$file")
           
-            # Send the request and capture the response
-            review=$(curl -s http://127.0.0.1:11434/api/generate -d "$json_payload" | jq -r '.response')
-            
-            # Prepare the comment
-            comment="Ollama Code Review for \`$file\`:\n\n$review"
-            
-            # Append the comment to the review file
-            echo "$comment" >> ollama_review.txt
+              # Escape the file content for JSON
+              escaped_content=$(echo "$file_content" | jq -sRr @json)
+          
+              # Prepare the JSON payload
+              json_payload=$(jq -n \
+                --arg model "mistral" \
+                --arg prompt "You are an expert programmer in golang that writes simple, concise code and explanations. Find the bug and Review the following file:\n\n\`\`\`\n$escaped_content\n\`\`\`" \
+                '{model: $model, prompt: $prompt, stream: false}')
+          
+              # Send the request and capture the response
+              review=$(curl -s http://127.0.0.1:11434/api/generate -d "$json_payload" | jq -r '.response')
+          
+              # Prepare the comment
+              comment="Ollama Code Review for \`$file\`:\n\n$review"
+          
+              # Append the comment to the review file
+              echo "$comment" >> ollama_review.txt
+            else
+              echo "Cannot read file $file" >> ollama_review.txt
+            fi
           done
 
-          
-          gh pr comment ${{ github.event.pull_request.number }} --body "$(cat $file)"
-          gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_review.txt)"
-        shell: bash
+      - name: Upload Review
+        uses: actions/upload-artifact@v2
+        with:
+          name: ollama_review
+          path: ollama_review.txt
