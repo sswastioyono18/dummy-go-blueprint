@@ -31,10 +31,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            review=$(curl -s http://127.0.0.1:11434/api/generate -d '{"model": "${{ inputs.model }}", "prompt": "You are an expert programmer in golang that writes simple, concise code and explanations. Find the bug and Review the following file:\n\n```\n$(cat $file)\n```", "stream": false}' | jq -r '.response')
+            # Read the file content into a variable
+            file_content=$(cat "$file")
+            
+            # Prepare the JSON payload
+            json_payload=$(jq -n \
+            --arg model "${{ inputs.model }}" \
+            --arg prompt "You are an expert programmer in golang that writes simple, concise code and explanations. Find the bug and Review the following file:\n\n\`\`\`\n$file_content\n\`\`\`" \
+            '{model: $model, prompt: $prompt, stream: false}')
+          
+            # Send the request and capture the response
+            review=$(curl -s http://127.0.0.1:11434/api/generate -d "$json_payload" | jq -r '.response')
+            
+            # Prepare the comment
             comment="Ollama Code Review for \`$file\`:\n\n$review"
+            
+            # Append the comment to the review file
             echo "$comment" >> ollama_review.txt
           done
+
           
           gh pr comment ${{ github.event.pull_request.number }} --body "$(cat $file)"
           gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_review.txt)"
