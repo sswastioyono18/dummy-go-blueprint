@@ -57,10 +57,19 @@ func (s *Server) CampaignHandler(w http.ResponseWriter, r *http.Request) {
 	resp["message"] = "test"
 	resp["message"] = "Create Campaign Success"
 
+	fib(0)
+
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
 		log.Fatalf("error handling JSON marshal. Err: %v", err)
 	}
 
 	_, _ = w.Write(jsonResp)
+}
+
+func fib(n int) int {
+	if n <= 0 {
+		return n
+	}
+	return fib(n-1) + fib(n-2)
 }
