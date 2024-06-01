@@ -19,7 +19,7 @@ jobs:
         run: curl -fsSL https://ollama.com/install.sh | sh
       - name: Run ollama
         run: |
-          ollama pull mistral
+          ollama pull codellama
         shell: bash
 
       - name: Get changed files
