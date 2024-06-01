@@ -50,3 +50,15 @@ func (s *Server) DonationHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, _ = w.Write(jsonResp)
 }
+
+func (s *Server) CampaignHandler(w http.ResponseWriter, r *http.Request) {
+	resp := make(map[string]string)
+	resp["message"] = "Create Campaign Success"
+
+	jsonResp, err := json.Marshal(resp)
+	if err != nil {
+		log.Fatalf("error handling JSON marshal. Err: %v", err)
+	}
+
+	_, _ = w.Write(jsonResp)
+}
