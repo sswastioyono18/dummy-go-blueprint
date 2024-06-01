@@ -36,5 +36,6 @@ jobs:
             echo "$comment" >> ollama_review.txt
           done
           
+          gh pr comment ${{ github.event.pull_request.number }} --body "$(cat $file)"
           gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_review.txt)"
         shell: bash
