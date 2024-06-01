@@ -1,0 +1,41 @@
+name: Ollama GitHub Reviews
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+      - name: Run ollama
+        run: |
+          ollama pull codellama
+        shell: bash
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v43
+
+      - name: Review code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            gh pr comment ${{ github.event.pull_request.number }} --body "$(cat $file)"
+            review=$(curl -s http://127.0.0.1:11434/api/generate -d '{"model": "codellama", "prompt": "You are an expert programmer in golang that writes simple, concise code and explanations.Review the following file:\n\n```\n$(cat $file)\n```", "stream": false}' | jq -r '.response')
+            comment="Ollama Code Review for \`$file\`:\n\n$review"
+            echo "$comment" >> ollama_review.txt
+          done
+          
+          gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_review.txt)"
+        shell: bash
