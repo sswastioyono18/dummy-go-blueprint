@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.0.0...v1.1.0) (2024-06-08)
+
+
+### Features
+
+* added more ci ([4dd25ce](https://github.com/sswastioyono18/dummy-go-blueprint/commit/4dd25ce67240ac8953eb9d4672df59a597d1a5e7))
+
 ## 1.0.0 (2024-06-08)
 
 
