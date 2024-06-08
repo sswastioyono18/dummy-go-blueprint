@@ -21,8 +21,11 @@ jobs:
         run:
           echo "Building"
 
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: deploy
         shell: bash
         run:
-          echo "deploying"
-
+          echo "Deploying"
