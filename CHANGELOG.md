@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.1.0...v1.2.0) (2024-06-08)
+
+
+### Features
+
+* test aja ([50ae233](https://github.com/sswastioyono18/dummy-go-blueprint/commit/50ae2335cf81e51959ed6eb5ae8c75c77a8c2af6))
+
 ## [1.1.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.0.0...v1.1.0) (2024-06-08)
 
 
