@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.6.0...v1.7.0) (2024-06-08)
+
+
+### Features
+
+* lala ([09a4212](https://github.com/sswastioyono18/dummy-go-blueprint/commit/09a421251a623cd964ce6f886ae48fd794e2ce37))
+
 ## [1.6.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.5.0...v1.6.0) (2024-06-08)
 
 
