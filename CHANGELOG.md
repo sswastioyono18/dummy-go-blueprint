@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.8.0...v1.9.0) (2024-06-08)
+
+
+### Features
+
+* test ([9a98581](https://github.com/sswastioyono18/dummy-go-blueprint/commit/9a985813f5724b31b563572cba429fe4a08553c1))
+
 ## [1.8.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.7.0...v1.8.0) (2024-06-08)
 
 
