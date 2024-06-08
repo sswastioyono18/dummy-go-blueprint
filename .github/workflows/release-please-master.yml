@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+      - master
+
+name: release-please
+jobs:
+  release-please:
+    runs-on: ktbs-small-runner
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          release-type: go
+          draft-pull-request: "true"
+          labels: "be-autorelease-pending"
+          release-labels: "be-autorelease-tagged"
+          changelog-types: '[
+          {"type":"feat","section":"Features","hidden":false},
+          {"type":"feature","section":"Features","hidden":false},
+          {"type":"fix","section":"Bugfix","hidden":false},
+          {"type":"docs","section":"Documentation","hidden":false},
+          {"type":"refactor","section":"Refactor","hidden":false},
+          {"type":"ci","section":"CI","hidden":false},
+          {"type":"build","section":"CI","hidden":false},
+          {"type":"config","section":"Config","hidden":false},
+          {"type":"infra","section":"Config","hidden":false},
+          {"type":"chore","section":"QoL Improvement","hidden":false} ]'
+
+

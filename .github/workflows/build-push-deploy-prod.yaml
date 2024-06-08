@@ -1,0 +1,28 @@
+name: Build-Push-Deploy Prod
+
+on:
+  release:
+    types: [released]
+
+env:
+  ENV: prod
+  JIRA_URL: "https://kitabisa.atlassian.net"
+  JIRA_USERNAME: "${{ secrets.JIRA_CLOUD_API_USER }}"
+  JIRA_API_TOKEN: "${{ secrets.JIRA_CLOUD_API_TOKEN }}"
+  WEBHOOK: "${{ secrets.BEUPS_JIRA_CREATE_RELEASE_WEBHOOK }}"
+
+jobs:
+  build-push:
+    runs-on: ktbs-small-runner
+
+    steps:
+      - name: Build
+        shell: bash
+        run:
+          echo "Building"
+
+      - name: deploy
+        shell: bash
+        run:
+          echo "deploying"
+
