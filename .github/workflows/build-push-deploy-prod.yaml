@@ -14,12 +14,16 @@ env:
 jobs:
   build-push:
     runs-on: ubuntu-latest
-
     steps:
       - name: Build
         shell: bash
         run:
           echo "Building"
+
+      - name: Test
+        shell: bash
+        run:
+          go test
 
   deploy:
     runs-on: ubuntu-latest
