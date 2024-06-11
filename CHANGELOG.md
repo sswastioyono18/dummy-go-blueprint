@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.12.0...v1.13.0) (2024-06-11)
+
+
+### Features
+
+* update README.md ([1110ab6](https://github.com/sswastioyono18/dummy-go-blueprint/commit/1110ab6eab08f65c4272380dbda9d3b44b5f4dac))
+
 ## [1.12.0](https://github.com/sswastioyono18/dummy-go-blueprint/compare/v1.11.0...v1.12.0) (2024-06-10)
 
 
